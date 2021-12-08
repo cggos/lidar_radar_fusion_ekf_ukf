@@ -78,3 +78,9 @@ cmake .. & make -j3
   4.53271 0.279 -0.842172 53.1339 4.29136 0.215312  2.28434 0.226323
   43.2222 2.65959 0.931181  23.2469 4.29136 0.215312  2.28434 0.226323
   ```
+
+* draw the position data from `output.txt`
+
+  <p align="center">
+    <img src="./imgs/lidar_radar_fusion_output.png" style="width:100%;"/>
+  </p>
