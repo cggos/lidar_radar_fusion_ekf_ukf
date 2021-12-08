@@ -80,7 +80,15 @@ cmake .. & make -j3
   ```
 
 * draw the position data from `output.txt`
+  
+  - input `data-1.txt`
 
-  <p align="center">
-    <img src="./imgs/lidar_radar_fusion_output.png" style="width:100%;"/>
-  </p>
+    <p align="center">
+      <img src="./imgs/lidar_radar_fusion_output1.png" style="width:100%;"/>
+    </p>
+
+  - input `data-2.txt`
+
+    <p align="center">
+      <img src="./imgs/lidar_radar_fusion_output2.png" style="width:100%;"/>
+    </p>  
