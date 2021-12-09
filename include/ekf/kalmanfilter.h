@@ -1,8 +1,9 @@
 #ifndef KALMANFILTER_H_
 #define KALMANFILTER_H_
 
-#include "Eigen/Dense"
-#include "datapoint.h"
+#include <Eigen/Dense>
+
+#include "common/datapoint.h"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;

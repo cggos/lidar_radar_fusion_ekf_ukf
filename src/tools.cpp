@@ -2,6 +2,10 @@
 
 using namespace std;
 
+double normalize(const double a){
+  return (fabs(a) > M_PI) ? remainder(a, 2. * M_PI) : a;
+}
+
 VectorXd convert_cartesian_to_polar(const VectorXd& v){
 
   const double THRESH = 0.0001;

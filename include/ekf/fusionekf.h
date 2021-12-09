@@ -1,8 +1,9 @@
 #ifndef FUSIONEKF_H_
 #define FUSIONEKF_H_
 
-#include "Eigen/Dense"
-#include "datapoint.h"
+#include <Eigen/Dense>
+
+#include "common/datapoint.h"
 #include "kalmanfilter.h"
 
 using Eigen::MatrixXd;

@@ -7,11 +7,12 @@
 #include <vector>
 #include <stdlib.h>
 
-#include <vector>
-#include "Eigen/Dense"
+#include <Eigen/Dense>
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
+
+double normalize(const double a);
 
 VectorXd convert_cartesian_to_polar(const VectorXd& v);
 VectorXd convert_polar_to_cartesian(const VectorXd& v);

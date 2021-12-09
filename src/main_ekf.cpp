@@ -3,9 +3,11 @@
 #include <sstream>
 #include <vector>
 #include <stdlib.h>
-#include "Eigen/Dense"
+
+#include <Eigen/Dense>
+
 #include "common/usagecheck.h"
-#include "ekf/datapoint.h"
+#include "common/datapoint.h"
 #include "common/tools.h"
 #include "ekf/fusionekf.h"
 

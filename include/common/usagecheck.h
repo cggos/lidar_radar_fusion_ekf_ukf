@@ -7,8 +7,10 @@
 #include <string>
 #include <iomanip>
 #include <vector>
-#include "ekf/datapoint.h"
-#include "Eigen/Dense"
+
+#include <Eigen/Dense>
+
+#include "common/datapoint.h"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
