@@ -7,7 +7,7 @@
 #include <string>
 #include <iomanip>
 #include <vector>
-#include "datapoint.h"
+#include "ekf/datapoint.h"
 #include "Eigen/Dense"
 
 using Eigen::MatrixXd;

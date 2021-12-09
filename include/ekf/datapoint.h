@@ -4,7 +4,7 @@
 #include "Eigen/Dense"
 #include <stdlib.h>
 #include <iostream>
-#include "tools.h"
+#include "common/tools.h"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;

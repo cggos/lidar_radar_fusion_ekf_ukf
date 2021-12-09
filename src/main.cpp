@@ -4,10 +4,10 @@
 #include <vector>
 #include <stdlib.h>
 #include "Eigen/Dense"
-#include "usagecheck.h"
-#include "datapoint.h"
-#include "tools.h"
-#include "fusionekf.h"
+#include "common/usagecheck.h"
+#include "ekf/datapoint.h"
+#include "common/tools.h"
+#include "ekf/fusionekf.h"
 
 using namespace std;
 using std::vector;

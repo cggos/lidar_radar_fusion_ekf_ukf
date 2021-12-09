@@ -1,4 +1,4 @@
-#include "kalmanfilter.h"
+#include "ekf/kalmanfilter.h"
 
 void KalmanFilter::start(
   const int nin, const VectorXd& xin, const MatrixXd& Pin, const MatrixXd& Fin, const MatrixXd& Qin){
