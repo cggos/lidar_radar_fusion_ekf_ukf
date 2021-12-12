@@ -1,8 +1,7 @@
 #include "ekf/kalmanfilter.h"
 
 void KalmanFilter::start(
-  const int nin, const VectorXd& xin, const MatrixXd& Pin, const MatrixXd& Fin, const MatrixXd& Qin){
-
+    const int nin, const VectorXd& xin, const MatrixXd& Pin, const MatrixXd& Fin, const MatrixXd& Qin) {
   this->n = nin;
   this->I = MatrixXd::Identity(this->n, this->n);
   this->x = xin;
@@ -11,26 +10,21 @@ void KalmanFilter::start(
   this->Q = Qin;
 }
 
-void KalmanFilter::setQ(const MatrixXd& Qin){
-  this->Q = Qin;
-}
+void KalmanFilter::setQ(const MatrixXd& Qin) { this->Q = Qin; }
 
-void KalmanFilter::updateF(const double dt){
+void KalmanFilter::updateF(const double dt) {
   this->F(0, 2) = dt;
   this->F(1, 3) = dt;
 }
 
-VectorXd KalmanFilter::get() const{
-  return this->x;
-}
+VectorXd KalmanFilter::get() const { return this->x; }
 
-void KalmanFilter::predict(){
+void KalmanFilter::predict() {
   this->x = this->F * this->x;
   this->P = this->F * this->P * this->F.transpose() + this->Q;
 }
 
-void KalmanFilter::update(const VectorXd& z, const MatrixXd& H, const VectorXd& Hx, const MatrixXd& R){
-
+void KalmanFilter::update(const VectorXd& z, const MatrixXd& H, const VectorXd& Hx, const MatrixXd& R) {
   const MatrixXd PHt = this->P * H.transpose();
   const MatrixXd S = H * PHt + R;
   const MatrixXd K = PHt * S.inverse();

@@ -2,12 +2,9 @@
 
 using namespace std;
 
-double normalize(const double a){
-  return (fabs(a) > M_PI) ? remainder(a, 2. * M_PI) : a;
-}
+double normalize(const double a) { return (fabs(a) > M_PI) ? remainder(a, 2. * M_PI) : a; }
 
-VectorXd convert_cartesian_to_polar(const VectorXd& v){
-
+VectorXd convert_cartesian_to_polar(const VectorXd &v) {
   const double THRESH = 0.0001;
   VectorXd polar_vec(3);
 
@@ -16,21 +13,20 @@ VectorXd convert_cartesian_to_polar(const VectorXd& v){
   const double vx = v(2);
   const double vy = v(3);
 
-  const double rho = sqrt( px * px + py * py);
+  const double rho = sqrt(px * px + py * py);
 
   const bool degenerate = (py == 0.0 && px == 0.0);
   const double phi = degenerate ? 0.0 : atan2(py, px);
   // Avoids degenerate case, see error handling in
   // http://en.cppreference.com/w/cpp/numeric/math/atan2
 
-  const double drho = (rho > THRESH) ? ( px * vx + py * vy ) / rho : 0.0;
+  const double drho = (rho > THRESH) ? (px * vx + py * vy) / rho : 0.0;
 
   polar_vec << rho, phi, drho;
   return polar_vec;
 }
 
-VectorXd convert_polar_to_cartesian(const VectorXd& v){
-
+VectorXd convert_polar_to_cartesian(const VectorXd &v) {
   VectorXd cartesian_vec(4);
 
   // Assumes that the the (vx, vy) is
@@ -49,8 +45,7 @@ VectorXd convert_polar_to_cartesian(const VectorXd& v){
   return cartesian_vec;
 }
 
-MatrixXd calculate_jacobian(const VectorXd &v){
-
+MatrixXd calculate_jacobian(const VectorXd &v) {
   const double THRESH = 0.0001;
   MatrixXd H = MatrixXd::Zero(3, 4);
 
@@ -64,8 +59,7 @@ MatrixXd calculate_jacobian(const VectorXd &v){
   const double d = sqrt(d_squared);
   const double d_cubed = d_squared * d;
 
-  if (d >= THRESH){
-
+  if (d >= THRESH) {
     const double r11 = px / d;
     const double r12 = py / d;
     const double r21 = -py / d_squared;
@@ -73,21 +67,17 @@ MatrixXd calculate_jacobian(const VectorXd &v){
     const double r31 = py * (vx * py - vy * px) / d_cubed;
     const double r32 = px * (vy * px - vx * py) / d_cubed;
 
-    H << r11, r12, 0.0, 0.0,
-         r21, r22, 0.0, 0.0,
-         r31, r31, r11, r12;
+    H << r11, r12, 0.0, 0.0, r21, r22, 0.0, 0.0, r31, r31, r11, r12;
   }
 
   return H;
 }
 
-VectorXd calculate_RMSE(const vector<VectorXd> &estimations, const vector<VectorXd> &ground_truths){
-
+VectorXd calculate_RMSE(const vector<VectorXd> &estimations, const vector<VectorXd> &ground_truths) {
   VectorXd rmse(4);
   rmse << 0.0, 0.0, 0.0, 0.0;
 
-  for (int k = 0; k < estimations.size(); ++k){
-
+  for (int k = 0; k < estimations.size(); ++k) {
     VectorXd diff = estimations[k] - ground_truths[k];
     diff = diff.array() * diff.array();
     rmse += diff;

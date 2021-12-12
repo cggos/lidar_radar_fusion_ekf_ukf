@@ -1,7 +1,6 @@
 #include "ekf/fusionekf.h"
 
-FusionEKF::FusionEKF(){
-
+FusionEKF::FusionEKF() {
   this->initialized = false;
 
   this->lidar_R = MatrixXd(this->lidar_n, this->lidar_n);
@@ -12,24 +11,16 @@ FusionEKF::FusionEKF(){
   this->F = MatrixXd::Identity(this->n, this->n);
   this->Q = MatrixXd::Zero(this->n, this->n);
 
-  this->lidar_R << 0.0225, 0.0,
-                   0.0, 0.0225;
+  this->lidar_R << 0.0225, 0.0, 0.0, 0.0225;
 
-  this->radar_R  << 0.09, 0.0, 0.0,
-                    0.0, 0.0009, 0,
-                    0.0, 0.0, 0.09;
+  this->radar_R << 0.09, 0.0, 0.0, 0.0, 0.0009, 0, 0.0, 0.0, 0.09;
 
-  this->lidar_H << 1.0, 0.0, 0.0, 0.0,
-                   0.0, 1.0, 0.0, 0.0;
+  this->lidar_H << 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0;
 
-  this->P << 1.0, 0.0, 0.0, 0.0,
-             0.0, 1.0, 0.0, 0.0,
-             0.0, 0.0, 1000.0, 0.0,
-             0.0, 0.0, 0.0, 1000;
+  this->P << 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1000.0, 0.0, 0.0, 0.0, 0.0, 1000;
 }
 
-void FusionEKF::updateQ(const double dt){
-
+void FusionEKF::updateQ(const double dt) {
   // ax, ay are acceleration covariances treated as noise
 
   const double dt2 = dt * dt;
@@ -45,24 +36,19 @@ void FusionEKF::updateQ(const double dt){
   const double r42 = dt3 * this->ay / 2;
   const double r44 = dt2 * this->ay;
 
-  this->Q << r11, 0.0, r13, 0.0,
-             0.0, r22, 0.0, r24,
-             r31, 0.0, r33, 0.0,
-             0.0, r42, 0.0, r44;
+  this->Q << r11, 0.0, r13, 0.0, 0.0, r22, 0.0, r24, r31, 0.0, r33, 0.0, 0.0, r42, 0.0, r44;
 
   this->KF.setQ(Q);
 }
 
-void FusionEKF::start(const DataPoint& data){
-
+void FusionEKF::start(const DataPoint& data) {
   this->timestamp = data.get_timestamp();
   VectorXd x = data.get_state();
   this->KF.start(this->n, x, this->P, this->F, this->Q);
   this->initialized = true;
 }
 
-void FusionEKF::compute(const DataPoint& data){
-
+void FusionEKF::compute(const DataPoint& data) {
   /**************************************************************************
    * PREDICTION STEP
    - Assumes current velocity is the same for this time period
@@ -79,24 +65,22 @@ void FusionEKF::compute(const DataPoint& data){
    - Updates appropriate matrices given on measurement
    - Assumes measurement received is either from radar or lidar
    **************************************************************************/
-  const VectorXd z = data.get(); // measurement from sensor
-  const VectorXd x = this->KF.get(); // predicted state
+  const VectorXd z = data.get();      // measurement from sensor
+  const VectorXd x = this->KF.get();  // predicted state
 
   // Hx is the sensor measurement if the predicted state is true
   // and the sensors are perfect (no noise)
-  VectorXd Hx;  
-  MatrixXd R; 
+  VectorXd Hx;
+  MatrixXd R;
   MatrixXd H;
 
-  if (data.get_type() == DataPointType::RADAR){
-
+  if (data.get_type() == DataPointType::RADAR) {
     VectorXd s = data.get_state();
     H = calculate_jacobian(s);
     Hx = convert_cartesian_to_polar(x);
-    R =  this->radar_R;
+    R = this->radar_R;
 
-  } else if (data.get_type() == DataPointType::LIDAR){
-
+  } else if (data.get_type() == DataPointType::LIDAR) {
     H = this->lidar_H;
     Hx = this->lidar_H * x;
     R = this->lidar_R;
@@ -105,10 +89,6 @@ void FusionEKF::compute(const DataPoint& data){
   this->KF.update(z, H, Hx, R);
 }
 
-void FusionEKF::process(const DataPoint& data){
-  this->initialized ? this->compute(data) : this->start(data);
-}
+void FusionEKF::process(const DataPoint& data) { this->initialized ? this->compute(data) : this->start(data); }
 
-VectorXd FusionEKF::get() const{
-  return this->KF.get();
-}
+VectorXd FusionEKF::get() const { return this->KF.get(); }

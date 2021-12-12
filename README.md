@@ -28,7 +28,7 @@ Note:
 
 ### UKF
 
-- In essence we want to get: the position of the system in cartesian coordinates, the velocity magnitude, the yaw angle in radians, and yaw rate  in radians per second `(x, y, vx, vy, yaw, yawrate)`
+- In essence we want to get: the position of the system in cartesian coordinates, the velocity magnitude, the yaw angle in radians, and yaw rate  in radians per second `(x, y, v, yaw, yawrate)`
 
 - We are assuming a **constant turn/yaw rate and velocity magnitude model** (CRTV) for this particular system
 

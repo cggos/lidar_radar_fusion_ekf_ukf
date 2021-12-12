@@ -3,8 +3,8 @@
 
 #include <Eigen/Dense>
 
-#include "ukf/settings.h"
 #include "common/tools.h"
+#include "ukf/settings.h"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -26,37 +26,36 @@ using Eigen::VectorXd;
  to get the corresponding calculated values
 *******************************/
 
-class StateUpdater{
+class StateUpdater {
+ public:
+  StateUpdater();
+  void process(const VectorXd& predicted_x,
+               const VectorXd& predicted_z,
+               const VectorXd& z,
+               const MatrixXd& S,
+               const MatrixXd& predicted_P,
+               const MatrixXd& sigma_x,
+               const MatrixXd& sigma_z);
+  VectorXd getx() const;
+  MatrixXd getP() const;
+  double get_nis() const;
 
-  private:
-    MatrixXd x;
-    MatrixXd P;
-    double nis;
+ private:
+  MatrixXd x;
+  MatrixXd P;
+  double nis;
 
-    // PRIVATE FUNCTIONS
-    MatrixXd compute_Tc(const VectorXd& predicted_x,
-                        const VectorXd& predicted_z,
-                        const MatrixXd& sigma_x,
-                        const MatrixXd& sigma_z);
-    void update(const VectorXd& z,
-                const MatrixXd& S,
-                const MatrixXd& Tc,
-                const VectorXd& predicted_z,
-                const VectorXd& predicted_x,
-                const MatrixXd& predicted_P);
+  MatrixXd compute_Tc(const VectorXd& predicted_x,
+                      const VectorXd& predicted_z,
+                      const MatrixXd& sigma_x,
+                      const MatrixXd& sigma_z);
 
-  public:
-    StateUpdater();
-    void process(const VectorXd& predicted_x,
-                 const VectorXd& predicted_z,
-                 const VectorXd& z,
-                 const MatrixXd& S,
-                 const MatrixXd& predicted_P,
-                 const MatrixXd& sigma_x,
-                 const MatrixXd& sigma_z);
-    VectorXd getx() const;
-    MatrixXd getP() const;
-    double get_nis() const;
+  void update(const VectorXd& z,
+              const MatrixXd& S,
+              const MatrixXd& Tc,
+              const VectorXd& predicted_z,
+              const VectorXd& predicted_x,
+              const MatrixXd& predicted_P);
 };
 
 #endif /* STATEUPDATER_H_ */
